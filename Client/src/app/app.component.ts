@@ -55,7 +55,7 @@ export class AppComponent {
 
     let body = `time=${this.time}`;
 
-    let resp = this.http.post<string>("http://192.168.1.19/set-timer", body, {headers: headers})
+    let resp = this.http.post<string>("/api/set-timer", body, {headers: headers})
       .subscribe(resp => {
       console.log(resp);
     })
