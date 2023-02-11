@@ -11,7 +11,7 @@ export class AppComponent {
   time: number = 0;
   timeText: string = '0s';
   
-  deviceAddress: string = "127.0.0.0";
+  deviceAddress: string = "192.168.1.19";
  
   constructor(private http: HttpClient){}
 
@@ -44,16 +44,18 @@ export class AppComponent {
   }
 
   post() {
-    this.timeText = "Posted";
-    this.time = 0;
+    if(this.time <= 0 ){
+      this.timeText = `${this.time}s cant be sent`;
+    }
+    this.timeText = `Sended ${this.time}s`;
 
     let headers = new HttpHeaders()
-      .set('content-type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .set('Access-Control-Allow-Origin', '*')
 
-    let options = {headers: headers}
+    let body = `time=${this.time}`;
 
-    let resp = this.http.post<string>("http://" + this.deviceAddress + "/post", {time: this.time} ,options)
+    let resp = this.http.post<string>("http://192.168.1.19/set-timer", body, {headers: headers})
       .subscribe(resp => {
       console.log(resp);
     })
